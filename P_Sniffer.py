@@ -28,7 +28,7 @@ class PSniffer(QObject):
     def start_sniffing(self):
         try:
             spy.sniff(prn=self.process_packet, timeout=self.s_timeout, count=self.s_count, filter=self.filter,
-                      stop_filter= lambda x: self.should_stop())
+                      stop_filter=lambda x: self.should_stop())
         except NameError:
             pass
         print("Done Sniffing")
@@ -36,7 +36,6 @@ class PSniffer(QObject):
 
     def should_stop(self):
         return self.s_stop
-
 
     def stop_sniffing(self):
         self.s_stop = True
@@ -116,13 +115,18 @@ class PSniffer(QObject):
 
         details = self.all_detailed_packets[self.packet_id]
         raw_index = 0
-        for i, layer in enumerate(details):
-            if layer[0] == "###[ IP ]###":
+
+        for layer in details:
+            raw_index = 0
+            if "IP" in layer[0]:
                 d = dict(layer[1:])
-                source = d["src"]
-                destination = d["dst"]
-            elif layer[0] == "###[ Raw ]###":
-                raw_index = i
+                source = d['src']
+                destination = d['dst']
+            if "ARP" in layer[0:]:
+                source = ""
+                destination = ""
+            elif "Raw" in layer[0]:
+                raw_index += 1
 
         if re.search(r'http', s):
             protocol = "HTTP"

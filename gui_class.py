@@ -2,6 +2,7 @@ import sys
 from gui import *
 from P_Sniffer import *
 from threading import Thread
+from PyQt5 import QtWidgets
 
 
 class GUI(object):
