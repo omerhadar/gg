@@ -37,7 +37,6 @@ class PSniffer(QObject):
     def should_stop(self):
         return self.s_stop
 
-
     def stop_sniffing(self):
         self.s_stop = True
 
@@ -117,11 +116,11 @@ class PSniffer(QObject):
         details = self.all_detailed_packets[self.packet_id]
         raw_index = 0
         for i, layer in enumerate(details):
-            if layer[0] == "###[ IP ]###":
+            if "IP" in layer[0]:
                 d = dict(layer[1:])
                 source = d["src"]
                 destination = d["dst"]
-            elif layer[0] == "###[ Raw ]###":
+            elif "Raw" in layer[0]:
                 raw_index = i
 
         if re.search(r'http', s):
