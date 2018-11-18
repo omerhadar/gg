@@ -2,5 +2,5 @@ import sys
 from gui_class import GUI
 
 
-Pentagon = GUI()
-sys.exit(Pentagon.app.exec_())
+UI = GUI()
+sys.exit(UI.app.exec_())

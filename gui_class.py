@@ -87,7 +87,7 @@ class GUI(object):
         elif header == 'DNS':
             return 'Domain Name Server'
         elif header == 'Raw':
-            return 'Hypertext Transfer Protocol'
+            return 'Raw'
         else:
             return header
 

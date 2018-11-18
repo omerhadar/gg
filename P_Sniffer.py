@@ -116,20 +116,27 @@ class PSniffer(QObject):
         details = self.all_detailed_packets[self.packet_id]
         raw_index = 0
 
-        for layer in details:
-            raw_index = 0
+        for i, layer in enumerate(details):
             if "IP" in layer[0]:
                 d = dict(layer[1:])
                 source = d['src']
                 destination = d['dst']
             if "ARP" in layer[0:]:
-                source = ""
+                source = d['psrc']
                 destination = ""
             elif "Raw" in layer[0]:
-                raw_index += 1
+                raw_index = i
 
-        if re.search(r'http', s):
+        if "HTTP" in details[raw_index]:
             protocol = "HTTP"
+        elif re.search(r'HTTP', s):
+            protocol = "HTTP"
+        elif re.search(r'TCP', s):
+            protocol = "TCP"
+        elif re.search(r'UDP', s):
+            protocol = "UDP"
+        elif re.search(r'ARP', s):
+            protocol = "ARP"
         elif raw_index:
             protocol = details[raw_index - 1][0].replace("###[ ", "").replace(" ]###", "")
         elif len(details) >= 4:
