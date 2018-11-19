@@ -119,20 +119,15 @@ class PSniffer(QObject):
         for i, layer in enumerate(details):
             if "IP" in layer[0]:
                 d = dict(layer[1:])
-<<<<<<< HEAD
                 source = d['src']
                 destination = d['dst']
             if "ARP" in layer[0:]:
                 source = d['psrc']
                 destination = ""
-=======
-                source = d["src"]
-                destination = d["dst"]
->>>>>>> origin/master
             elif "Raw" in layer[0]:
                 raw_index = i
 
-        if "HTTP" in details[raw_index]:
+        if re.search(r'HTTP', str(details[raw_index][1:])):
             protocol = "HTTP"
         elif re.search(r'HTTP', s):
             protocol = "HTTP"
@@ -169,8 +164,6 @@ class PSniffer(QObject):
 if __name__ == "__main__":
     pws = PSniffer()
     try:
-        # pws.read_pcap_file()
         pws.start_sniffing()
-        # pws.write_into_pcap()
     except ValueError:
         pass

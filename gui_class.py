@@ -66,9 +66,10 @@ class GUI(object):
             for protocol in packet_details:
                 tmp = QtWidgets.QTreeWidgetItem(self.ui.DetailView)
                 tmp.setText(0, self.header_rename(protocol[0]))
-                for i in range(1, len(protocol[1:])):
+                for i in range(1, len(protocol)):
                     tmp2 = QtWidgets.QTreeWidgetItem(tmp)
                     tmp2.setText(0, protocol[i][0] + " : " + protocol[i][1])
+
             self.ui.HexView.setText(self.packets_hex[int(packet_no)])
 
     def header_rename(self, header):
