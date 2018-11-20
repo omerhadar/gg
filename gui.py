@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -50,11 +51,22 @@ class Ui_MainWindow(object):
         self.DetailView.header().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         self.DetailView.header().setStretchLastSection(False)
         self.verticalLayout.addWidget(self.DetailView)
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
+        self.NumView = QtWidgets.QTextEdit(self.centralwidget)
+        self.NumView.setReadOnly(True)
+        self.NumView.setObjectName("NumView")
+        self.NumView.setFixedWidth(60)
+        self.horizontalLayout_5.addWidget(self.NumView)
         self.HexView = QtWidgets.QTextEdit(self.centralwidget)
         self.HexView.setReadOnly(True)
         self.HexView.setObjectName("HexView")
-        self.verticalLayout.addWidget(self.HexView)
+        self.horizontalLayout_5.addWidget(self.HexView)
+        self.AscView = QtWidgets.QTextEdit(self.centralwidget)
+        self.AscView.setReadOnly(True)
+        self.AscView.setObjectName("AscView")
+        self.horizontalLayout_5.addWidget(self.AscView)
         self.horizontalLayout_3.addLayout(self.verticalLayout)
+        self.verticalLayout.addLayout(self.horizontalLayout_5)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 762, 21))
@@ -96,7 +108,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "JacSniff"))
         self.start_btn.setText(_translate("MainWindow", "Start"))
         self.stop_btn.setText(_translate("MainWindow", "Stop"))
         self.Filter.setText(_translate("MainWindow", "Filter"))

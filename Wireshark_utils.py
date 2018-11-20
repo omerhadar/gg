@@ -7,9 +7,10 @@ def get_show_data(packet):
 
 
 def get_hex_data(packet, func):
-    s = StringIO()
-    sys.stdout = s
-    func(packet)
-    sys.stdout = sys.__stdout__
-    full_str_list = s.getvalue().splitlines()
-    return full_str_list
+    s = func(packet, dump=True)
+    lst = ["", "", ""]
+    for line in s.splitlines():
+        lst[0] += line[0:4] + "\n"
+        lst[1] += line[6:38] + "\n"
+        lst[2] += line[39:56] + "\n"
+    return lst
