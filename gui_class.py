@@ -2,7 +2,7 @@ import sys
 from gui import *
 from P_Sniffer import *
 from threading import Thread
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 
 
 class GUI(object):
@@ -33,6 +33,9 @@ class GUI(object):
         self.MainWindow.show()
         self.ui.stop_btn.setEnabled(False)
         self.sniff_thread = None
+
+        self.start_pos_hex = self.ui.HexView.textCursor().selectionStart()
+        self.end_pos_hex = self.ui.HexView.textCursor().selectionEnd()
 
     def view_packet(self, packet_summary, packet_detail, packet_hex):
         '''if packet_summary['ID'] == 0:
@@ -69,8 +72,9 @@ class GUI(object):
                 for i in range(1, len(protocol)):
                     tmp2 = QtWidgets.QTreeWidgetItem(tmp)
                     tmp2.setText(0, protocol[i][0] + " : " + protocol[i][1])
-
-            self.ui.HexView.setText(self.packets_hex[int(packet_no)])
+            self.ui.NumView.setText(self.packets_hex[int(packet_no)].split("\n\n")[0])
+            self.ui.HexView.setText(self.packets_hex[int(packet_no)].split("\n\n")[1])
+            self.ui.AscView.setText(self.packets_hex[int(packet_no)].split("\n\n")[2])
 
     def header_rename(self, header):
         header = header.replace(']', '')
@@ -139,6 +143,9 @@ class GUI(object):
             self.MainWindow.showNormal()
         else:
             self.MainWindow.showFullScreen()
+
+    def highlighted_text(self):
+        pass
 
 
 if __name__ == "__main__":
