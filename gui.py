@@ -55,7 +55,10 @@ class Ui_MainWindow(object):
         self.NumView = QtWidgets.QTextEdit(self.centralwidget)
         self.NumView.setReadOnly(True)
         self.NumView.setObjectName("NumView")
+<<<<<<< HEAD
         self.NumView.setFixedWidth(60)
+=======
+>>>>>>> origin/master
         self.horizontalLayout_5.addWidget(self.NumView)
         self.HexView = QtWidgets.QTextEdit(self.centralwidget)
         self.HexView.setReadOnly(True)
@@ -121,6 +124,7 @@ class Ui_MainWindow(object):
         self.ListView.headerItem().setText(5, _translate("MainWindow", "Length"))
         self.ListView.headerItem().setText(6, _translate("MainWindow", "Info."))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
+
         self.menuView.setTitle(_translate("MainWindow", "View"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.actionNew.setText(_translate("MainWindow", " New Session"))
