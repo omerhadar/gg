@@ -1,8 +1,12 @@
+#https://secdevops.ai/learning-packet-analysis-with-data-science-5356a3340d4e
 import sys
 from gui import *
 from P_Sniffer import *
 from threading import Thread
 from PyQt5 import QtWidgets, QtGui
+import binascii
+import pandas
+import numpy
 
 
 class GUI(object):
@@ -33,9 +37,6 @@ class GUI(object):
         self.MainWindow.show()
         self.ui.stop_btn.setEnabled(False)
         self.sniff_thread = None
-
-        self.start_pos_hex = self.ui.HexView.textCursor().selectionStart()
-        self.end_pos_hex = self.ui.HexView.textCursor().selectionEnd()
 
     def view_packet(self, packet_summary, packet_detail, packet_hex):
         '''if packet_summary['ID'] == 0:
@@ -131,6 +132,8 @@ class GUI(object):
         self.ui.DetailView.clear()
         self.ui.ListView.clear()
         self.ui.HexView.clear()
+        self.ui.NumView.clear()
+        self.ui.AscView.clear()
 
         self.packets_details.clear()
         self.packets_summary.clear()
@@ -144,8 +147,8 @@ class GUI(object):
         else:
             self.MainWindow.showFullScreen()
 
-    def highlighted_text(self):
-        pass
+    def build_df(self):
+
 
 
 if __name__ == "__main__":

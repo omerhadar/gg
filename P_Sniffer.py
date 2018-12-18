@@ -1,6 +1,6 @@
 import Wireshark_utils as WsU
 import re
-import scapy.all as spy
+import scapy.all as scapy
 import datetime
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
@@ -27,7 +27,7 @@ class PSniffer(QObject):
     @pyqtSlot()
     def start_sniffing(self):
         try:
-            spy.sniff(prn=self.process_packet, timeout=self.s_timeout, count=self.s_count, filter=self.filter,
+            scapy.sniff(prn=self.process_packet, timeout=self.s_timeout, count=self.s_count, filter=self.filter,
                       stop_filter=lambda x: self.should_stop())
         except NameError:
             pass
@@ -58,7 +58,7 @@ class PSniffer(QObject):
 
         self.all_detailed_packets.append(pkt_details)
 
-        hx = WsU.get_hex_data(sniffed_pkt, spy.hexdump)
+        hx = WsU.get_hex_data(sniffed_pkt, scapy.hexdump)
         hx = "\n".join(hx)
         self.all_hex_packets.append(hx)
 
@@ -73,7 +73,7 @@ class PSniffer(QObject):
 
     @pyqtSlot()
     def read_pcap_file(self, file_path="example_network_traffic.pcap"):
-        packets = spy.rdpcap(file_path)
+        packets = scapy.rdpcap(file_path)
         for one in packets:
             self.process_packet(one)
 
@@ -151,7 +151,7 @@ class PSniffer(QObject):
         return summary_dict
 
     def write_into_pcap(self, file_path_name="test.pcap"):
-        spy.wrpcap(file_path_name, self.all_sniffed_packets)
+        scapy.wrpcap(file_path_name, self.all_sniffed_packets)
 
     def refresh(self):
         self.all_detailed_packets.clear()
@@ -159,6 +159,9 @@ class PSniffer(QObject):
         self.all_hex_packets.clear()
         self.all_sniffed_packets.clear()
         self.packet_id = 0
+
+    def get_all_sniffed_packets(self):
+        return self.all_sniffed_packets
 
 
 if __name__ == "__main__":

@@ -55,10 +55,7 @@ class Ui_MainWindow(object):
         self.NumView = QtWidgets.QTextEdit(self.centralwidget)
         self.NumView.setReadOnly(True)
         self.NumView.setObjectName("NumView")
-<<<<<<< HEAD
         self.NumView.setFixedWidth(60)
-=======
->>>>>>> origin/master
         self.horizontalLayout_5.addWidget(self.NumView)
         self.HexView = QtWidgets.QTextEdit(self.centralwidget)
         self.HexView.setReadOnly(True)
@@ -93,12 +90,19 @@ class Ui_MainWindow(object):
         self.actionOpen.setObjectName("actionOpen")
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
+        self.actionSaveAnalyze = QtWidgets.QAction(MainWindow)
+        self.actionSaveAnalyze.setObjectName("self.actionSaveAnalyze")
+        self.actionAnalyze = QtWidgets.QAction(MainWindow)
+        self.actionAnalyze.setObjectName("self.actionAnalyze")
         self.actionToggle_FullScreen = QtWidgets.QAction(MainWindow)
         self.actionToggle_FullScreen.setObjectName("actionToggle_FullScreen")
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionSaveAnalyze)
+        self.menuFile.addAction(self.actionAnalyze)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
         self.menuView.addAction(self.actionToggle_FullScreen)
@@ -131,6 +135,8 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionOpen.setText(_translate("MainWindow", "Open"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
+        self.actionAnalyze.setText(_translate("MainWindow", "Analyze File"))
+        self.actionSaveAnalyze.setText(_translate("MainWindow", "Save And Analyze"))
         self.actionToggle_FullScreen.setText(_translate("MainWindow", "Toggle_FullScreen"))
 
 
