@@ -10,6 +10,7 @@ import binascii
 from pandas import *
 from numpy import *
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 sns.set(color_codes=True)
 
@@ -28,7 +29,7 @@ class GUI(object):
         self.ui.actionSave.triggered.connect(self.save_file)
         self.ui.actionNew.triggered.connect(self.refresh_session)
         self.ui.actionToggle_FullScreen.triggered.connect(self.toggle_full_screen)
-        self.ui.actionAnalyze.triggered.connect(self.anazyle_file)
+        self.ui.actionAnalyze.triggered.connect(self.analyze_file)
         self.ui.actionSaveAnalyze.triggered.connect(self.save_and_analyze_file)
 
         self.packets_details = []
@@ -154,21 +155,23 @@ class GUI(object):
         else:
             self.MainWindow.showFullScreen()
 
-    def anazyle_file(self):
+    def analyze_file(self):
         print("0")
         file = QtWidgets.QFileDialog.getOpenFileName(self.MainWindow, "Open a File",
                                                           filter="Wireshark capture file (*.pcap;*.pcapng);;All Files (*.*)")
         print("1")
         df = analyze(file[0])
-        plot = create_plot(df)
+        create_plot(df)
+        plt.show()
 
     def save_and_analyze_file(self):
         file_name = QtWidgets.QFileDialog.getSaveFileName(self.MainWindow, "Save into a File",
                                                           filter="Wireshark capture file (*.pcap;*.pcapng);;All Files (*.*)")
         if file_name[0]:
             self.sniffer.write_into_pcap(file_path_name=file_name[0])
-        self.anazyle_file(file_name)
-
+        df = analyze(file_name[0])
+        create_plot(df)
+        plt.show()
 
 if __name__ == "__main__":
     temp = GUI()
