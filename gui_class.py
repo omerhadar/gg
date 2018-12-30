@@ -11,6 +11,7 @@ from pandas import *
 from numpy import *
 import seaborn as sns
 import matplotlib.pyplot as plt
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit
 
 sns.set(color_codes=True)
 
@@ -156,13 +157,11 @@ class GUI(object):
             self.MainWindow.showFullScreen()
 
     def analyze_file(self):
-        print("0")
         file = QtWidgets.QFileDialog.getOpenFileName(self.MainWindow, "Open a File",
                                                           filter="Wireshark capture file (*.pcap;*.pcapng);;All Files (*.*)")
-        print("1")
         df = analyze(file[0])
-        create_plot(df)
-        plt.show()
+        item = self.getChoice()
+        create_plot(df, item)
 
     def save_and_analyze_file(self):
         file_name = QtWidgets.QFileDialog.getSaveFileName(self.MainWindow, "Save into a File",
@@ -170,8 +169,16 @@ class GUI(object):
         if file_name[0]:
             self.sniffer.write_into_pcap(file_path_name=file_name[0])
         df = analyze(file_name[0])
-        create_plot(df)
-        plt.show()
+        item = self.getChoice()
+        create_plot(df, item)
+
+    def getChoice(self):
+        items = ("Addresses Sending Payloads", "Destination Addresses (Bytes Received)", "Source Ports (Bytes Sent)",
+                 "Destination Ports (Bytes Received)", "Time to Bytes")
+        item, okPressed = QInputDialog.getItem(self, "Get item", "Type of graph:", items, 0, False)
+        if okPressed and item:
+            return item
+
 
 if __name__ == "__main__":
     temp = GUI()

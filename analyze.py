@@ -1,8 +1,15 @@
+import matplotlib
+# Make sure that we are using QT5
+matplotlib.use('Qt5Agg')
 from pandas import *
 from scapy.all import *
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.figure as figure
+from PyQt5 import QtWidgets
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+import sys
 
 
 def analyze(file):
@@ -57,30 +64,32 @@ def analyze(file):
     return df
 
 
-def create_plot(df):
-    frequent_address = df['src'].describe()['top']
-    # Group by Source Address and Payload Sum
-    source_addresses = df.groupby("src")['payload'].sum()
-    source_addresses.plot(kind='barh', title="Addresses Sending Payloads", figsize=(8, 5))
-    plt.figure()
-    print("5")
-    # Group by Destination Address and Payload Sum
-    destination_addresses = df.groupby("dst")['payload'].sum()
-    destination_addresses.plot(kind='barh', title="Destination Addresses (Bytes Received)", figsize=(8, 5))
-    plt.figure()
-    print("6")
-    # Group by Source Port and Payload Sum
-    source_payloads = df.groupby("sport")['payload'].sum()
-    source_payloads.plot(kind='barh', title="Source Ports (Bytes Sent)", figsize=(8, 5))
-    plt.figure()
-    print("7")
-    # Group by Destination Port and Payload Sum
-    destination_payloads = df.groupby("dport")['payload'].sum()
-    destination_payloads.plot(kind='barh', title="Destination Ports (Bytes Received)", figsize=(8, 5))
-    plt.figure()
-    # groupby("time")['payload'].sum().plot(kind='barh',title="Destination Ports (Bytes Received)",figsize=(8,5))
-    print("8")
-    frequent_address_df = df[df['src'] == frequent_address]
-    x = frequent_address_df['payload'].tolist()
-    print("9")
-    sns.barplot(x="time", y="payload", data=frequent_address_df[['payload', 'time']], label="Total", color="b")
+def create_plot(df, op):
+    fig, axes = plt.subplots(num=1)
+    if "Addresses Sending Payloads" == op:
+        # Group by Source Address and Payload Sum
+        source_addresses = df.groupby("src")['payload'].sum()
+        axes = source_addresses.plot(kind='barh', title="Addresses Sending Payloads", figsize=(8, 5))
+        print("5")
+    elif "Destination Addresses (Bytes Received)" == op:
+        # Group by Destination Address and Payload Sum
+        destination_addresses = df.groupby("dst")['payload'].sum()
+        axes = destination_addresses.plot(kind='barh', title="Destination Addresses (Bytes Received)", figsize=(8, 5))
+        print("6")
+    elif "Source Ports (Bytes Sent)" == op:
+        # Group by Source Port and Payload Sum
+        source_payloads = df.groupby("sport")['payload'].sum()
+        axes = source_payloads.plot(kind='barh', title="Source Ports (Bytes Sent)", figsize=(8, 5))
+        print("7")
+    elif "Destination Ports (Bytes Received)" == op:
+        # Group by Destination Port and Payload Sum
+        destination_payloads = df.groupby("dport")['payload'].sum()
+        axes = destination_payloads.plot(kind='barh', title="Destination Ports (Bytes Received)", figsize=(8, 5))
+        print("8")
+    else:
+        frequent_address = df['src'].describe()['top']
+        frequent_address_df = df[df['src'] == frequent_address]
+        x = frequent_address_df['payload'].tolist()
+        print("9")
+        axes = sns.barplot(x="time", y="payload", data=frequent_address_df[['payload', 'time']], label="Total", color="b")
+    fig.show()
