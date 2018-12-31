@@ -1,5 +1,4 @@
 import matplotlib
-# Make sure that we are using QT5
 matplotlib.use('Qt5Agg')
 from pandas import *
 from scapy.all import *

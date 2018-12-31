@@ -32,10 +32,13 @@ class GUI(object):
         self.ui.actionToggle_FullScreen.triggered.connect(self.toggle_full_screen)
         self.ui.actionAnalyze.triggered.connect(self.analyze_file)
         self.ui.actionSaveAnalyze.triggered.connect(self.save_and_analyze_file)
+        self.ui.actionCreateGraph.triggered.connect(self.create_graph)
 
         self.packets_details = []
         self.packets_summary = []
         self.packets_hex = []
+
+        self.df = None
 
         self.sniffer = PSniffer()
         self.sniffer.packet_received.connect(self.view_packet)
@@ -159,25 +162,25 @@ class GUI(object):
     def analyze_file(self):
         file = QtWidgets.QFileDialog.getOpenFileName(self.MainWindow, "Open a File",
                                                           filter="Wireshark capture file (*.pcap;*.pcapng);;All Files (*.*)")
-        df = analyze(file[0])
-        item = self.getChoice()
-        create_plot(df, item)
+        self.df = analyze(file[0])
 
     def save_and_analyze_file(self):
         file_name = QtWidgets.QFileDialog.getSaveFileName(self.MainWindow, "Save into a File",
                                                           filter="Wireshark capture file (*.pcap;*.pcapng);;All Files (*.*)")
         if file_name[0]:
             self.sniffer.write_into_pcap(file_path_name=file_name[0])
-        df = analyze(file_name[0])
-        item = self.getChoice()
-        create_plot(df, item)
+        self.df = analyze(file_name[0])
 
     def getChoice(self):
         items = ("Addresses Sending Payloads", "Destination Addresses (Bytes Received)", "Source Ports (Bytes Sent)",
                  "Destination Ports (Bytes Received)", "Time to Bytes")
-        item, okPressed = QInputDialog.getItem(self, "Get item", "Type of graph:", items, 0, False)
+        item, okPressed = QInputDialog.getItem(self.MainWindow, "Get item", "Type of graph:", items, 0, False)
         if okPressed and item:
             return item
+
+    def create_graph(self):
+        item = self.getChoice()
+        create_plot(self.df, item)
 
 
 if __name__ == "__main__":
