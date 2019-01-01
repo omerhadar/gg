@@ -4,15 +4,10 @@ from pandas import *
 from scapy.all import *
 import seaborn as sns
 import matplotlib.pyplot as plt
-import matplotlib.figure as figure
 from PyQt5 import QtWidgets
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import sys
 
 
 def analyze(file):
-    print("1.5")
     pcap = rdpcap(file)
     print("2")
     # Collect field names from IP/TCP/UDP (These will be columns in DF)
@@ -24,7 +19,9 @@ def analyze(file):
     print("3")
     # Create blank DataFrame
     df = DataFrame(columns=dataframe_fields)
-    for packet in pcap[IP]:
+    print("3.5")
+    print(str(len(pcap[IP])))
+    for i, packet in enumerate(pcap[IP]):
         # Field array for each row of DataFrame
         field_values = []
         # Add all IP fields to dataframe
@@ -36,8 +33,8 @@ def analyze(file):
                 field_values.append(packet[IP].fields[field])
 
         field_values.append(packet.time)
-
         layer_type = type(packet[IP].payload)
+
         for field in tcp_fields:
             try:
                 if field == 'options':
@@ -85,10 +82,12 @@ def create_plot(df, op):
         destination_payloads = df.groupby("dport")['payload'].sum()
         axes = destination_payloads.plot(kind='barh', title="Destination Ports (Bytes Received)", figsize=(8, 5))
         print("8")
-    else:
+    elif "Time to Bytes" == op:
         frequent_address = df['src'].describe()['top']
         frequent_address_df = df[df['src'] == frequent_address]
         x = frequent_address_df['payload'].tolist()
         print("9")
         axes = sns.barplot(x="time", y="payload", data=frequent_address_df[['payload', 'time']], label="Total", color="b")
+    else:
+        return None
     fig.show()

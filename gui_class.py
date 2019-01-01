@@ -6,11 +6,8 @@ from gui import *
 from P_Sniffer import *
 from threading import Thread
 from PyQt5 import QtWidgets, QtGui
-import binascii
-from pandas import *
 from numpy import *
 import seaborn as sns
-import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit
 
 sns.set(color_codes=True)

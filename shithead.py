@@ -58,8 +58,8 @@ class ApplicationWindow(QMainWindow):
         self.main_widget = QWidget(self)
 
         file = "D:/Users/User/Documents/GitHub/gg/gggg.pcap"
-        df = analyze(file)
-        ax = create_plot(df)
+        df = analyze(file, self)
+        ax = create_plot(df, )
 
         l = QVBoxLayout(self.main_widget)
         sc = MyStaticMplCanvas(ax, self.main_widget, width=5, height=4, dpi=100)
