@@ -62,6 +62,7 @@ def analyze(file):
 
 def create_plot(df, op):
     fig, axes = plt.subplots(num=1)
+    fig.cls()
     if "Addresses Sending Payloads" == op:
         # Group by Source Address and Payload Sum
         source_addresses = df.groupby("src")['payload'].sum()
