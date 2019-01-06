@@ -119,8 +119,12 @@ class PSniffer(QObject):
         for i, layer in enumerate(details):
             if "IP" in layer[0]:
                 d = dict(layer[1:])
-                source = d['src']
-                destination = d['dst']
+                try:
+                    source = d['src']
+                    destination = d['dst']
+                except:
+                    source = ""
+                    destination = ""
             if "ARP" in layer[0:]:
                 source = d['psrc']
                 destination = ""

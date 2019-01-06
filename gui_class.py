@@ -36,6 +36,7 @@ class GUI(object):
         self.packets_hex = []
 
         self.df = None
+        self.ui.actionCreateGraph.setEnabled(False)
 
         self.sniffer = PSniffer()
         self.sniffer.packet_received.connect(self.view_packet)
@@ -160,6 +161,8 @@ class GUI(object):
         file = QtWidgets.QFileDialog.getOpenFileName(self.MainWindow, "Open a File",
                                                           filter="Wireshark capture file (*.pcap;*.pcapng);;All Files (*.*)")
         self.df = analyze(file[0])
+        if self.df is not None:
+            self.ui.actionCreateGraph.setEnabled(True)
 
     def save_and_analyze_file(self):
         file_name = QtWidgets.QFileDialog.getSaveFileName(self.MainWindow, "Save into a File",
@@ -167,6 +170,8 @@ class GUI(object):
         if file_name[0]:
             self.sniffer.write_into_pcap(file_path_name=file_name[0])
         self.df = analyze(file_name[0])
+        if self.df is not None:
+            self.ui.actionCreateGraph.setEnabled(True)
 
     def getChoice(self):
         items = ("Addresses Sending Payloads", "Destination Addresses (Bytes Received)", "Source Ports (Bytes Sent)",

@@ -9,6 +9,8 @@ from PyQt5 import QtWidgets
 
 def analyze(file):
     pcap = rdpcap(file)
+    if len(pcap[IP]) == 0:
+        return None
     print("2")
     # Collect field names from IP/TCP/UDP (These will be columns in DF)
     ip_fields = [field.name for field in IP().fields_desc]
